@@ -5,6 +5,7 @@ This is a organization tool idea that has been floating around in my head for aw
 
 Obvious choice here is to use javascript (web dev, dynamic elements, easily embedable, static web content) and the canvas element seemed like a good starting point. A pinch of w3 schools and now I am well on my way...
 
+<html>
   <canvas id="ezbd" width="1200" height="720" style="border:1px solid #000000; background-color: #333;"></canvas>
   <script>
 
@@ -85,3 +86,4 @@ Obvious choice here is to use javascript (web dev, dynamic elements, easily embe
       recursiveDraw(data);
 
   </script>
+</html>
