@@ -8,9 +8,9 @@ Obvious choice here is to use `javascript` (web dev, built-in json compatability
 ### Goals
 - [x] embeddable (simple to insert into an web page/HTML context)
 - [ ] zoomable (click to zoom in on an element and further visualize contents)
-- [~] inline json/json file (just write a plain text json file to produce diagram, super easy to change)
+- [x] inline json/json file (just write a plain text json file to produce diagram, super easy to change)
 - [x] percentage based (dimensions are percentage based and relative to their parent element so you don't have to think much when creating a diagram)
-- [~] element support (supports all elements typically used in block diagrams)
+- [ ] element support (supports all elements typically used in block diagrams)
     - [x] rectangles
     - [x] lines
     - [x] text/labels (text if you want to position text somewhere, label if you just want text right in the middle)
