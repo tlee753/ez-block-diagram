@@ -33,7 +33,7 @@ Obvious choice here is to use `javascript` (web dev, built-in json compatability
 ### Early Demonstration (Version 2.0)
 The following `json` will generate the `svg` below on your page
 
-```json
+```javascript
 var data = {
     car: {
         type: "rect",
