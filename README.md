@@ -34,61 +34,61 @@ Obvious choice here is to use `javascript` (web dev, built-in json compatability
 The following `json` will generate the `svg` below on your page
 
 ```json
-        var data = {
-            car: {
+var data = {
+    car: {
+        type: "rect",
+        color: "blue",
+        per: [0, 0, 100, 100],
+        carTitle: {
+            type: "text",
+            color: "white",
+            per: [50, 5],
+            text: "Cars"
+        },
+        sportsCar: {
+            type: "rect",
+            color: "red",
+            per: [5, 10, 95, 95],
+            sportsCarTitle: {
+                type: "text",
+                color: "white",
+                per: [50, 5],
+                text: "Sports Cars"
+            },
+            mustang: {
+                label: "Mustang",
                 type: "rect",
-                color: "blue",
-                per: [0, 0, 100, 100],
-                carTitle: {
-                    type: "text",
-                    color: "white",
-                    per: [50, 5],
-                    text: "Cars"
-                },
-                sportsCar: {
+                color: "silver",
+                per: [5, 10, 45, 95],
+                mach1: {
+                    label: "Mach 1",
                     type: "rect",
-                    color: "red",
-                    per: [5, 10, 95, 95],
-                    sportsCarTitle: {
-                        type: "text",
-                        color: "white",
-                        per: [50, 5],
-                        text: "Sports Cars"
-                    },
-                    mustang: {
-                        label: "Mustang",
-                        type: "rect",
-                        color: "silver",
-                        per: [5, 10, 45, 95],
-                        mach1: {
-                            label: "Mach 1",
-                            type: "rect",
-                            color: "black",
-                            per: [20, 60, 80, 75],
-                        },
-                        boss429: {
-                            label: "Boss 429",
-                            type: "rect",
-                            color: "purple",
-                            per: [20, 75, 80, 90],
-                        }
-                    },
-                    camaro: {
-                        label: "Camaro",
-                        type: "rect",
-                        color: "orange",
-                        per: [55, 10, 95, 95],
-                    },
-                    mustangCamaro: {
-                        label: "Link",
-                        type: "line",
-                        color: "navy",
-                        per: [45, 52, 55, 52],
-                        width: 10
-                    }
+                    color: "black",
+                    per: [20, 60, 80, 75],
+                },
+                boss429: {
+                    label: "Boss 429",
+                    type: "rect",
+                    color: "purple",
+                    per: [20, 75, 80, 90],
                 }
+            },
+            camaro: {
+                label: "Camaro",
+                type: "rect",
+                color: "orange",
+                per: [55, 10, 95, 95],
+            },
+            mustangCamaro: {
+                label: "Link",
+                type: "line",
+                color: "navy",
+                per: [45, 52, 55, 52],
+                width: 10
             }
         }
+    }
+}
 ```
 
 ![Demo 2.0](/demo-2.0.jpg)
