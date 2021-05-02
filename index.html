@@ -4,66 +4,67 @@
     <title>Ez block diagram</title>
 </head>
 
-<body style="background-color: grey; color: white;">
+<body style="background-color: grey; color: white; font-family: sans-serif;">
     <h3>This will be an everlasting love :)</h3>
     <br>
 
-    <canvas id="ezbd" width="1200" height="720" style="background-color: #333;"></canvas>
+    <svg id="ezbd" width="1200px" height="720px"></svg>
     <script>
 
-        var c = document.getElementById("ezbd");
-        var ctx = c.getContext("2d");
+        var svg = document.getElementById("ezbd");
+        svg.setAttribute("style", "border: 1px solid white");
+        const svgns = "http://www.w3.org/2000/svg";
 
         var data = {
             car: {
                 type: "rect",
                 color: "blue",
-                pos: [0, 0, 100, 100],
+                per: [0, 0, 100, 100],
                 carTitle: {
                     type: "text",
                     color: "white",
-                    pos: [50, 5],
+                    per: [50, 5],
                     text: "Cars"
                 },
                 sportsCar: {
                     type: "rect",
                     color: "red",
-                    pos: [5, 10, 95, 95],
+                    per: [5, 10, 95, 95],
                     sportsCarTitle: {
                         type: "text",
                         color: "white",
-                        pos: [50, 5],
+                        per: [50, 5],
                         text: "Sports Cars"
                     },
                     mustang: {
                         label: "Mustang",
                         type: "rect",
                         color: "silver",
-                        pos: [5, 10, 45, 95],
+                        per: [5, 10, 45, 95],
                         mach1: {
                             label: "Mach 1",
                             type: "rect",
                             color: "black",
-                            pos: [20, 60, 80, 75],
+                            per: [20, 60, 80, 75],
                         },
                         boss429: {
                             label: "Boss 429",
                             type: "rect",
                             color: "purple",
-                            pos: [20, 75, 80, 90],
+                            per: [20, 75, 80, 90],
                         }
                     },
                     camaro: {
                         label: "Camaro",
                         type: "rect",
                         color: "orange",
-                        pos: [55, 10, 95, 95],
+                        per: [55, 10, 95, 95],
                     },
                     mustangCamaro: {
                         label: "Link",
                         type: "line",
                         color: "navy",
-                        pos: [45, 50, 55, 50],
+                        per: [45, 52, 55, 52],
                         width: 10
                     }
                 }
@@ -71,95 +72,135 @@
         }
 
         function recursiveDraw(obj, prevCoor) {
-            ctx.textAlign = "center";
-            ctx.textBaseline = 'middle';
-            ctx.font = "24px Arial";
 
             for (var key in obj) {
                 if (typeof obj[key] == "object" && obj[key] !== null) {
-                    if (typeof obj.pos == "undefined") {
+                    if (typeof obj.per == "undefined") {
                         var newPrevCor = [prevCoor[0], prevCoor[1], prevCoor[2], prevCoor[3]];
                     } else {
                         var newPrevCor = [
-                            prevCoor[0] + obj.pos[0] / 100 * (prevCoor[2] - prevCoor[0]),
-                            prevCoor[1] + obj.pos[1] / 100 * (prevCoor[3] - prevCoor[1]),
-                            prevCoor[0] + obj.pos[2] / 100 * (prevCoor[2] - prevCoor[0]),
-                            prevCoor[1] + obj.pos[3] / 100 * (prevCoor[3] - prevCoor[1])
+                            prevCoor[0] + obj.per[0] / 100 * (prevCoor[2] - prevCoor[0]),
+                            prevCoor[1] + obj.per[1] / 100 * (prevCoor[3] - prevCoor[1]),
+                            prevCoor[0] + obj.per[2] / 100 * (prevCoor[2] - prevCoor[0]),
+                            prevCoor[1] + obj.per[3] / 100 * (prevCoor[3] - prevCoor[1])
                         ];
                     }
                     recursiveDraw(obj[key], newPrevCor);
                 } else {
 
                     if (obj[key] == "rect") {
-                        ctx.fillStyle = obj.color;
-                        ctx.fillRect(
-                            prevCoor[0] + obj.pos[0] / 100 * (prevCoor[2] - prevCoor[0]),
-                            prevCoor[1] + obj.pos[1] / 100 * (prevCoor[3] - prevCoor[1]),
-                            (obj.pos[2] - obj.pos[0]) / 100 * (prevCoor[2] - prevCoor[0]),
-                            (obj.pos[3] - obj.pos[1]) / 100 * (prevCoor[3] - prevCoor[1])
-                        );
+                        let rect = document.createElementNS(svgns, "rect");
+
+                        rect.setAttribute("fill", obj.color);
+
+                        var x0 = prevCoor[0] + obj.per[0] / 100 * (prevCoor[2] - prevCoor[0])
+                        var y0 = prevCoor[1] + obj.per[1] / 100 * (prevCoor[3] - prevCoor[1])
+                        rect.setAttribute("x", x0);
+                        rect.setAttribute("y", y0);
+
+                        var width = (obj.per[2] - obj.per[0]) / 100 * (prevCoor[2] - prevCoor[0])
+                        var height = (obj.per[3] - obj.per[1]) / 100 * (prevCoor[3] - prevCoor[1])
+                        rect.setAttribute("width", width);
+                        rect.setAttribute("height", height);
+
+                        rect.setAttribute("rx", "20"); // rounded edges
+
+                        svg.appendChild(rect);
 
                         if (typeof obj.label !== "undefined") {
-                            ctx.fillStyle = "white";
-                            ctx.fillText(obj.label,
-                                ((prevCoor[0] + obj.pos[0] / 100 * (prevCoor[2] - prevCoor[0])) + (prevCoor[0] + obj.pos[2] / 100 * (prevCoor[2] - prevCoor[0])))/2,
-                                ((prevCoor[1] + obj.pos[1] / 100 * (prevCoor[3] - prevCoor[1])) + (prevCoor[1] + obj.pos[3] / 100 * (prevCoor[3] - prevCoor[1])))/2
-                            );
+                            let text = document.createElementNS(svgns, "text");
+
+                            text.setAttribute("fill", "white");
+                            text.setAttribute("alignment-baseline", "central");
+                            text.setAttribute("text-anchor", "middle");
+                            text.setAttribute("font-size", "40px");
+
+                            text.setAttribute("x", x0 + width / 2);
+                            text.setAttribute("y", y0 + height / 2);
+
+                            var textNode = document.createTextNode(obj.label);
+                            text.appendChild(textNode);
+
+                            svg.appendChild(text);
                         }
                     } else if (obj[key] == "line") {
-                        ctx.moveTo(
-                            prevCoor[0] + obj.pos[0] / 100 * (prevCoor[2] - prevCoor[0]),
-                            prevCoor[1] + obj.pos[1] / 100 * (prevCoor[3] - prevCoor[1])
-                        );
-                        ctx.lineTo(
-                            prevCoor[0] + obj.pos[2] / 100 * (prevCoor[2] - prevCoor[0]),
-                            prevCoor[1] + obj.pos[3] / 100 * (prevCoor[3] - prevCoor[1])
-                        );
-                        ctx.strokeStyle = obj.color;
-                        ctx.lineWidth = obj.width;
-                        ctx.stroke();
+                        var line = document.createElementNS(svgns, "line");
+
+                        var x0 = prevCoor[0] + obj.per[0] / 100 * (prevCoor[2] - prevCoor[0]);
+                        var y0 = prevCoor[1] + obj.per[1] / 100 * (prevCoor[3] - prevCoor[1]);
+                        var x1 = prevCoor[0] + obj.per[2] / 100 * (prevCoor[2] - prevCoor[0]);
+                        var y1 = prevCoor[1] + obj.per[3] / 100 * (prevCoor[3] - prevCoor[1]);
+
+                        line.setAttribute("x1", x0);
+                        line.setAttribute("y1", y0);
+                        line.setAttribute("x2", x1);
+                        line.setAttribute("y2", y1);
+                        line.setAttribute("stroke", obj.color);
+                        line.setAttribute("stroke-width", "4px");
+                        svg.appendChild(line);
 
                         if (typeof obj.label !== "undefined") {
-                            ctx.fillStyle = "white";
-                            ctx.fillText(obj.label,
-                                ((prevCoor[0] + obj.pos[0] / 100 * (prevCoor[2] - prevCoor[0])) + (prevCoor[0] + obj.pos[2] / 100 * (prevCoor[2] - prevCoor[0])))/2,
-                                ((prevCoor[1] + obj.pos[1] / 100 * (prevCoor[3] - prevCoor[1])) + (prevCoor[1] + obj.pos[3] / 100 * (prevCoor[3] - prevCoor[1])))/2
-                            );
+                            let text = document.createElementNS(svgns, "text");
+
+                            text.setAttribute("fill", "white");
+                            text.setAttribute("alignment-baseline", "central");
+                            text.setAttribute("text-anchor", "middle");
+                            text.setAttribute("font-size", "40px");
+
+                            text.setAttribute("x", (x0 + x1) / 2);
+                            text.setAttribute("y", (y0 + y1) / 2);
+
+                            var textNode = document.createTextNode(obj.label);
+                            text.appendChild(textNode);
+
+                            svg.appendChild(text);
                         }
                     } else if (obj[key] == "text") {
-                        ctx.fillStyle = obj.color;
-                        ctx.fillText(obj.text,
-                            prevCoor[0] + obj.pos[0] / 100 * (prevCoor[2] - prevCoor[0]),
-                            prevCoor[1] + obj.pos[1] / 100 * (prevCoor[3] - prevCoor[1]),
-                        );
-                    }
+                        let text = document.createElementNS(svgns, "text");
 
+                        text.setAttribute("fill", obj.color);
+                        text.setAttribute("alignment-baseline", "central");
+                        text.setAttribute("text-anchor", "middle");
+                        text.setAttribute("font-size", "40px");
+
+                        text.setAttribute("x", prevCoor[0] + obj.per[0] / 100 * (prevCoor[2] - prevCoor[0]));
+                        text.setAttribute("y", prevCoor[1] + obj.per[1] / 100 * (prevCoor[3] - prevCoor[1]));
+
+                        var textNode = document.createTextNode(obj.text);
+                        text.appendChild(textNode);
+
+                        svg.appendChild(text);
+                    }
                 }
             }
         }
 
-        recursiveDraw(data, [0, 0, c.width, c.height]);
-
-        // function roundRect(x, y, w, h, radius) {
-        //     var r = x + w;
-        //     var b = y + h;
-        //     ctx.beginPath();
-        //     // ctx.strokeStyle = "green";
-        //     // ctx.lineWidth = "4";
-        //     ctx.moveTo(x + radius, y);
-        //     ctx.lineTo(r - radius, y);
-        //     ctx.quadraticCurveTo(r, y, r, y + radius);
-        //     ctx.lineTo(r, y + h - radius);
-        //     ctx.quadraticCurveTo(r, b, r - radius, b);
-        //     ctx.lineTo(x + radius, b);
-        //     ctx.quadraticCurveTo(x, b, x, b - radius);
-        //     ctx.lineTo(x, y + radius);
-        //     ctx.quadraticCurveTo(x, y, x + radius, y);
-        //     ctx.stroke();
-        // }
-
+        recursiveDraw(data, [0, 0, svg.width.baseVal.value, svg.height.baseVal.value]);
     </script>
 
+    <br>
+    <p>
+        This will be an everlasting love
+        This will be the one I've waited for
+        This will be the first time anyone has loved me
+        I'm so glad you found me in time
+        And I'm so glad that you recrefied my mind
+        This will be an everlasting love for me
+        Loving you is some kind of wonderful
+        Because you showed me just how much you care
+        You've given me the thrill of a lifetime
+        And made me believe you've got more thrills to spare, oh!
+        This will be an everlasting love
+        Oh, yes it will now!
+        You brought a lot of a sunshine in to my life
+        You filled me with happiness I never knew
+        You gave me more joy then I ever dreamed of
+        And no one, no one can take the place of you
+        This will be
+        You and me
+        Yes sir-ee
+        Eternally
+    </p>
 </body>
 
 </html>
